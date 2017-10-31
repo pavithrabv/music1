@@ -22,26 +22,26 @@ public class Cart implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Set<CartItem> items;
-    /**
-     * Construct a new Cart to hold items  
-     */
+	/**
+	 * Construct a new Cart to hold items
+	 */
 	public Cart() {
 		items = new HashSet<CartItem>();
 	}
-	
-    /**
-     * Obtain all items in this cart
-     * @return all items in the cart 
-     */
+
+	/**
+	 * Obtain all items in this cart
+	 * @return all items in the cart
+	 */
 	public Set<CartItem> getItems() {
 		return items;
 	}
-	
-	/**
-	 * Find an item of this cart through its product id.
-	 * @param product the product id
-	 * @return the item in this cart with the given product id. 
-	 */
+
+//	/**
+//	 * Find an item of this cart through its product id.
+//	 * @param Product the product id
+//	 * @return the item in this cart with the given product id.
+//	 */
 	public CartItem findItem(long productId) {
 		for (CartItem i : items) {
 			if (i.getProductId() == productId) {
@@ -54,7 +54,7 @@ public class Cart implements Serializable {
 	/**
 	 * Add an item into this cart. 
 	 * To be called from service code only, where a LineItem can be created
-	 * If the item already exists in the cart, only the quantity is changed. 
+	 * If the item already exists in the cart, only the quantity is changed.
 	 * @param item
 	 */
 	public void addItem(CartItem item) {
@@ -88,7 +88,7 @@ public class Cart implements Serializable {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * clean out cart (for end of checkout)

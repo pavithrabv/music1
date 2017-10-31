@@ -80,20 +80,20 @@ public class SystemTest {
 				System.out.println("Initializing system");
 			} else if (command.equalsIgnoreCase("gp")) // get list of CDs
 			{
-				Set<Product> cdList = null.; // TODO call service layer
+				Set<Product> cdList = userService.getAllProducts(); // TODO call service layer
 				if (cdList != null)
 					PresentationUtils.displayCDCatlog(cdList, System.out);
 
 			} else if (command.startsWith("gui")) { // get info on user
 				String usr = getTokens(command)[1];
-				UserData user = null; // TODO call service layer
+				UserData user = userService.getInfoOnUser(usr); // TODO call service layer
 				if (user == null)
 					System.out.println("\nNo such user" + usr +"\n");
 				else
 					PresentationUtils.displayUserInfo(user, System.out);
 			} else if (command.startsWith("gpi")) { // get info for product
 				String productCode = getTokens(command)[1];
-				Product product = null; // TODO call service layer
+				Product product = userService.getProductInfo(productCode); // TODO call service layer
 				if (product == null)
 					System.out.println("\nNo such product\n");
 				else
@@ -107,7 +107,7 @@ public class SystemTest {
 			} else if (command.startsWith("gti")) {
 				// gti prodcode:  list track info for CD
 				String productCode = getTokens(command)[1];
-				Product product = null; // TODO call service layer
+				Product product = userService.getProductInfo(productCode); // TODO call service layer
 				if (product == null)
 					System.out.println("\nNo such product\n");
 				else
@@ -118,20 +118,27 @@ public class SystemTest {
 				String params[] = getTokens(command);
 				String userEmail = params[1];
 				String productCode = params[2];
-				Product product = null; // TODO call service layer
+				Product product = userService.getProductInfo(productCode); // TODO call service layer
 				if (product == null)
 					System.out.println("\nNo such product\n");
 				else {
 					Set<Track> tracks = product.getTracks();
 					Track track0 = tracks.iterator().next();
-					UserData user = null; // TODO call service layer
+					UserData user = userService.getInfoOnUser(userEmail); // TODO call service layer
 					if (user == null)
 						System.out.println("\nNo such user\n");
 					else  // TODO call service layer
+
+
+
+
+
+
+
 						System.out.println("Recording download for user");
 				}
 			} else if (command.startsWith("cc")) { // create cart
-				cart = null; // TODO call service layer
+				cart = userService.createNewCart(); // TODO call service layer
 				System.out.println("\n cart created ");
 
 			} else if (command.startsWith("sc")) { // show cart

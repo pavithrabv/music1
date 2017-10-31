@@ -130,6 +130,25 @@ public class ProductDAO {
         }
         return tracks;
         }
+
+
+    public Set<Product> listAllProducts() throws SQLException{
+        Set<Product> allProducts = new HashSet<Product>();
+        Statement stmt = connection.createStatement();
+        try {
+            String sqlString = "  select * from " + PRODUCT_TABLE ;
+            ResultSet set = stmt.executeQuery(sqlString);
+            while (set.next()) {
+               Product newProduct = new Product(set.getInt("product_id"), set.getString("product_code"),
+                        set.getString("product_description"), set.getBigDecimal("product_price"), null);
+                allProducts.add(newProduct);
+            }
+            set.close();
+        }finally {
+            stmt.close();
+        }
+        return allProducts;
+    }
 }
 
 

@@ -3,16 +3,16 @@ package cs636.music.service;
 import cs636.music.dao.*;
 
 import cs636.music.domain.*;
+import cs636.music.service.data.InvoiceData;
 import cs636.music.service.data.UserData;
 
 import java.sql.SQLException;
+import java.util.Set;
 
 /**
  * Created by pavithra on 10/27/17.
  */
 public class UserService {
-    //private DbDAO db;
-    //private AdminDAO adminDb;
     private DownloadDAO downloadDb;
     private InvoiceDAO invoiceDb;
     private LineItemDAO lineItemDb;
@@ -34,15 +34,15 @@ public class UserService {
     }
 
     public void registerUser(String firstName, String lastName, String email_address) throws ServiceException{
-        User newuser = null;
+        User newUser = null;
         try{
-            newuser = userDb.findUser(email_address);
-            if(newuser == null){
-                newuser = new User;
-                newuser.setFirstname(firstName);
-                newuser.setLastname(lastName);
-                newuser.setEmailAddress(email_address);
-                userDb.insertUser(newuser);
+            newUser = userDb.findUser(email_address);
+            if(newUser == null){
+                newUser = new User();
+                newUser.setFirstname(firstName);
+                newUser.setLastname(lastName);
+                newUser.setEmailAddress(email_address);
+                userDb.insertUser(newUser);
 
             }
         }catch (SQLException e){
@@ -62,28 +62,55 @@ public class UserService {
             throw new ServiceException("Unable to get info on User ",  e );
         }
         return userInfo;
-
     }
 
     public Cart createNewCart(){
         return new Cart();
     }
 
-    public Cart addLineItemsToCart(Cart cart, Product product, int numberOfItems){
+    public void addItemsToCart(Cart cart, Product product, int numberOfItems){
         long product_id = product.getId();
-        CartItem item = cart.findItem(product_id);
-        if(item != null){
-            int quantity = item.getQuantity();
-            item.setQuantity(quantity + numberOfItems);
-        }else {
-            item = new LineItem();
+        CartItem newItem = cart.findItem(product_id);
+        cart.addItem(newItem);
+    }
+
+    public void removeItemFromCart(Cart cart, Product product){
+        long product_id = product.getId();
+        CartItem newItem = cart.findItem(product_id);
+        if(newItem != null){
+            cart.removeItem(product_id);
+        }
+    }
+
+    public InvoiceData checkoutCart ()throws ServiceException{
+        Invoice invoice = null;
+        try{
 
         }
 
+    }
 
+    public Set<Product> getAllProducts() throws ServiceException{
+        Set<Product> listOfProducts;
+        try{
+            listOfProducts= productDb.listAllProducts();
+        }catch (SQLException e){
+            throw new ServiceException("Error in displaying list of products ",  e );
+        }
+        return listOfProducts;
+    }
+
+    public Product getProductInfo(String product_code) throws ServiceException{
+        Product newProduct = null;
+        try{
+            newProduct = productDb.findProductByCode(product_code);
+        }catch (SQLException e){
+            throw new ServiceException("Error in getting Product data ",  e );
+        }
+        return newProduct;
 
     }
 
 
 
-    }
+  }
