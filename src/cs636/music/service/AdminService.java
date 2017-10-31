@@ -4,8 +4,9 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import cs636.music.dao.AdminDAO;
-import cs636.music.dao.DbDAO;
+import cs636.music.dao.*;
+import cs636.music.domain.Download;
+import cs636.music.domain.Invoice;
 import cs636.music.service.data.DownloadData;
 import cs636.music.service.data.InvoiceData;
 
@@ -18,14 +19,26 @@ public class AdminService {
 	
 	private DbDAO db;
 	private AdminDAO adminDb;
-	
+	private DownloadDAO downloadDb;
+	private InvoiceDAO invoiceDb;
+	private LineItemDAO lineItemDb;
+	private ProductDAO productDb;
+
+
+
 	/**
 	 * construct a admin service provider 
 	 * @param dbDao
 	 */
-	public AdminService(DbDAO dbDao, AdminDAO adminDao /* TODO add other Dao's here */) {
+	public AdminService(DbDAO dbDao, AdminDAO adminDao, DownloadDAO downloadDao, InvoiceDAO invoiceDao,
+						LineItemDAO lineItemDao, ProductDAO productDao ) {
 		db = dbDao;	
 		adminDb = adminDao;
+		downloadDb = downloadDao;
+		invoiceDb = invoiceDao;
+		lineItemDb = lineItemDao;
+		productDb = productDao;
+
 	}
 	
 	/**
@@ -49,6 +62,13 @@ public class AdminService {
 	 */
 	public void processInvoice(long invoiceId) throws ServiceException {
 		System.out.println("TEMP: processing invoice");
+		try{
+			Invoice invoice = invoiceDb.findInvoice(invoiceId);
+			invoiceDb.updateInvoice(invoice);
+		}catch (SQLException e ){
+			throw new ServiceException("Error processing invoice: ", e);
+		}
+
 	}
 
 	/**
@@ -58,7 +78,17 @@ public class AdminService {
 	 */
 	public Set<InvoiceData> getListofInvoices() throws ServiceException {
 		System.out.println("TEMP: getting invoices");
-		return new HashSet<InvoiceData>();
+		Set <Invoice> allInvoices = null;
+		try{
+			allInvoices = invoiceDb.findAllInvoices();
+		}catch (SQLException e ){
+			throw new ServiceException("Error getting list of invoices: ", e);
+		}
+		Set<InvoiceData> AllInvoicesList = new HashSet<InvoiceData>();
+		for(Invoice currentInvoice: allInvoices){
+			AllInvoicesList.add(new InvoiceData(currentInvoice));
+		}
+		return AllInvoicesList;
 	}
 	
 	/**
@@ -68,7 +98,17 @@ public class AdminService {
 	 */
 	public Set<InvoiceData> getListofUnprocessedInvoices() throws ServiceException {
 		System.out.println("TEMP: getting unprocessed invoices");
-		return new HashSet<InvoiceData>();
+		Set <Invoice> allUnprocessedInvoices = null;
+		try{
+			allUnprocessedInvoices = invoiceDb.findAllUnprocessedInvoices();
+		}catch (SQLException e ){
+			throw new ServiceException("Error getting list of Unprocessed invoices: ", e);
+		}
+		Set<InvoiceData> AllUnprocessedInvoicesList = new HashSet<InvoiceData>();
+		for(Invoice currentInvoice: allUnprocessedInvoices){
+			AllUnprocessedInvoicesList.add(new InvoiceData(currentInvoice));
+		}
+		return AllUnprocessedInvoicesList;
 	}
 	
 	/**
@@ -78,7 +118,17 @@ public class AdminService {
 	 */
 	public Set<DownloadData> getListofDownloads() throws ServiceException {
 		System.out.println("TEMP: getting downloads");
-		return new HashSet<DownloadData>();
+		Set <Download> allDownloads = null;
+		try{
+			allDownloads = downloadDb.findAllDownloads();
+		}catch (SQLException e ){
+			throw new ServiceException("Error getting list of Downloads: ", e);
+		}
+		Set<DownloadData> AllDownloadsList = new HashSet<DownloadData>();
+		for(Download currentDownload: allDownloads){
+			AllDownloadsList.add(new DownloadData(currentDownload));
+		}
+		return AllDownloadsList;
 	}
 	
 	
