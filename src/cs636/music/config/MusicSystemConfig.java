@@ -2,7 +2,14 @@ package cs636.music.config;
 
 import cs636.music.dao.AdminDAO;
 import cs636.music.dao.DbDAO;
+import cs636.music.dao.DownloadDAO;
+import cs636.music.dao.InvoiceDAO;
+import cs636.music.dao.LineItemDAO;
+import cs636.music.dao.ProductDAO;
+import cs636.music.dao.UserDAO;
+
 import cs636.music.service.AdminService;
+import cs636.music.service.UserService;
 
 /**
  * @author Betty O'Neil
@@ -19,13 +26,13 @@ public class MusicSystemConfig {
 	private static AdminDAO adminDao;	
 	private static DbDAO dbDAO;  // contains Connection
 
-//	private static UserService userService;
-//	// the lower-level service objects-- you can vary this as desired
-//	private static DownloadDAO downloadDao;
-//	private static InvoiceDAO invoiceDao;
-//	private static LineItemDAO lineItemDao;
-//	private static ProductDAO productDao;
-//	private static UserDAO userDao;
+	private static UserService userService;
+	// the lower-level service objects-- you can vary this as desired
+	private static DownloadDAO downloadDao;
+	private static InvoiceDAO invoiceDao;
+	private static LineItemDAO lineItemDao;
+	private static ProductDAO productDao;
+	private static UserDAO userDao;
 
 	// set up service API, data access objects
 	public static void configureServices(String dbUrl, String usr, String pw)
@@ -39,16 +46,22 @@ public class MusicSystemConfig {
 				System.out.println("configureServices: dbUrl is null (defaulting to HSQLDB)");
 			else
 				System.out.println("configureServices: dbUrl = "+ dbUrl +", usr =" + usr + "pw = "+ pw);
-			System.out.println("TEMPORARY (remove this println): Stub implementation of configureServices, does not use DB fully yet");
+			//System.out.println("TEMPORARY (remove this println): Stub implementation of configureServices, does not use DB fully yet");
 		
 			dbDAO = new DbDAO(dbUrl, usr, pw);
-			adminDao= new AdminDAO(dbDAO);			
-			adminService = new AdminService(dbDAO, adminDao);
+			adminDao= new AdminDAO(dbDAO);
+			downloadDao= new DownloadDAO(dbDAO, userDao, productDao);
+			invoiceDao= new InvoiceDAO(dbDAO,lineItemDao, userDao, productDao );
+			lineItemDao= new LineItemDAO(dbDAO);
+			productDao= new ProductDAO(dbDAO);
+			userDao= new UserDAO(dbDAO);
+
+
+			adminService = new AdminService(dbDAO, adminDao, downloadDao, invoiceDao, lineItemDao, productDao);
+			userService = new UserService(downloadDao, invoiceDao, lineItemDao, productDao, userDao);
 			
 			// one way: you can change this--
-//			productDao = new ProductDAO(dbDAO);
-//			userDao = new UserDAO(dbDAO);
-//			downloadDao = new DownloadDAO(dbDAO, userDao);		
+//			downloadDao = new DownloadDAO(dbDAO, userDao);
 //			lineItemDao = new LineItemDAO(dbDAO, productDao);	
 //			invoiceDao = new InvoiceDAO(dbDAO,lineItemDao);
 //			userService = new UserService(productDao,userDao,downloadDao,lineItemDao,invoiceDao);
@@ -84,7 +97,7 @@ public class MusicSystemConfig {
 		return adminService;
 	}
 //
-//	public static UserService getUserService() {
-//		return userService;
-//	}
+	public static UserService getUserService() {
+		return userService;
+	}
 }
