@@ -14,7 +14,7 @@ import cs636.music.domain.Product;
 import cs636.music.domain.Track;
 import cs636.music.service.AdminService;
 import cs636.music.service.data.CartItemData;
-//import cs636.music.service.UserService;
+import cs636.music.service.UserService;
 import cs636.music.service.data.DownloadData;
 import cs636.music.service.data.InvoiceData;
 import cs636.music.service.data.UserData;
@@ -25,8 +25,8 @@ import cs636.music.service.data.UserData;
  *         This class tests the system.
  */
 public class SystemTest {
-	//private AdminService adminService;
-	//private UserService userService;
+	private AdminService adminService;
+	private UserService userService;
 	private String inFile;
 	private Cart cart;
 
@@ -34,8 +34,8 @@ public class SystemTest {
 			throws Exception {
 		this.inFile = inFile;
 		MusicSystemConfig.configureServices(dbUrl, usr, psswd);
-//		adminService = MusicSystemConfig.getAdminService();
-//		userService = MusicSystemConfig.getUserService();
+		adminService = MusicSystemConfig.getAdminService();
+		userService = MusicSystemConfig.getUserService();
 	}
 
 	public static void main(String[] args) {
@@ -80,7 +80,7 @@ public class SystemTest {
 				System.out.println("Initializing system");
 			} else if (command.equalsIgnoreCase("gp")) // get list of CDs
 			{
-				Set<Product> cdList = null; // TODO call service layer
+				Set<Product> cdList = null.; // TODO call service layer
 				if (cdList != null)
 					PresentationUtils.displayCDCatlog(cdList, System.out);
 

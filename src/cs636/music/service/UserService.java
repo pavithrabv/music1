@@ -71,7 +71,7 @@ public class UserService {
 
     public Cart addLineItemsToCart(Cart cart, Product product, int numberOfItems){
         long product_id = product.getId();
-        LineItem item = cart.findItem(product_id);
+        CartItem item = cart.findItem(product_id);
         if(item != null){
             int quantity = item.getQuantity();
             item.setQuantity(quantity + numberOfItems);

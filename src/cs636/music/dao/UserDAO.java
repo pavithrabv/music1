@@ -52,8 +52,7 @@ public class UserDAO {
     {
         Statement stmt = connection.createStatement();
         try {
-            stmt.executeUpdate(" update " + SYS_TABLE
-                    + " set user_id = user_id + 1");
+            stmt.executeUpdate(" update " + SYS_TABLE + " set user_id = user_id + 1");
         } finally {
             stmt.close();
         }
@@ -86,8 +85,7 @@ public class UserDAO {
         User user = null;
         Statement stmt = connection.createStatement();
         try {
-            String sqlString = " select * from " +
-                    USER_TABLE + " where email_address = " + email;
+            String sqlString = " select * from " + USER_TABLE + " where email_address = " + email;
             ResultSet set = stmt.executeQuery(sqlString);
 
             if (set.next()) {
@@ -111,8 +109,7 @@ public class UserDAO {
         User user = null;
         Statement stmt = connection.createStatement();
         try {
-            String sqlString = " select * from " +
-                    USER_TABLE + " where user_id = " + user_id;
+            String sqlString = " select * from " + USER_TABLE + " where user_id = " + user_id;
             ResultSet set = stmt.executeQuery(sqlString);
 
             if (set.next()) {

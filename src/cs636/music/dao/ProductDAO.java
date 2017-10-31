@@ -110,7 +110,7 @@ public class ProductDAO {
         }
 
     public Track findTrackByTID(int track_id) throws SQLException{
-        Product product = null;
+        Product product ;
         Track tracks = null;
         Statement stmt = connection.createStatement();
         try {

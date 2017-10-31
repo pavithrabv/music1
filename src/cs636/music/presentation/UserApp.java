@@ -2,8 +2,11 @@ package cs636.music.presentation;
 
 import java.io.IOException;
 import java.util.Scanner;
+import cs636.music.domain.*;
 
 import cs636.music.config.MusicSystemConfig;
+import cs636.music.service.UserService;
+
 
 /**
  * 
@@ -31,7 +34,7 @@ public class UserApp {
 	 * 
 	 */
 
-	// private UserService userService;
+	 private UserService userService;
 	private Scanner in; // the user input source
 
 	// state held in the presentation layer -- user-private data--
@@ -46,7 +49,7 @@ public class UserApp {
 	public UserApp(String dbUrl, String usr, String psswd) throws Exception {
 
 		MusicSystemConfig.configureServices(dbUrl, usr, psswd);
-		// userService = MusicSystemConfig.getUserService();
+		 userService = MusicSystemConfig.getUserService();
 		in = new Scanner(System.in);
 	}
 
@@ -104,7 +107,7 @@ public class UserApp {
 	 * 
 	 * @throws IOException, ServiceException
 	 */
-	public void handleProduct(/* Product product */) throws IOException {
+	public void handleProduct( Product product) throws IOException {
 		// listening == true means the user has used the L command to listen
 		// to tracks since first coming here from the Catalog page
 		boolean listening = false;
